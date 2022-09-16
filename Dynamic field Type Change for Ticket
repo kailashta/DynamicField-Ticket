@@ -1,0 +1,78 @@
+<json:array>
+	
+    <Core:forEach items="${hTTPRequest_1.body.sections}" var="section">
+    	
+        <Core:forEach items="${section.fields}" var="field">
+        	
+            <Core:if test="${field.type ne 'LookUp'}">
+            	
+                <json:object>
+                
+            		<json:property name="displayLabel" value="${field.displayLabel}"/>
+                	<json:property name="apiName" value="${field.apiName}"/>
+                	<json:property name="isMandatory" value="${field.isMandatory}"/>
+                	
+                    <Core:if test="${field.type eq 'Email' or field.type eq 'Text' or field.type eq 'Percent' or field.type eq 'Currency' or field.type eq 'URL'}">
+                    		<json:property name="elementType" value="${0}"/>
+                    		<json:property name="type" value="${0}"/>
+                	</Core:if>
+                
+                	<Core:if test="${field.type eq 'Picklist'}">
+                			<json:property name="elementType" value="${6}"/>
+                			<json:property name="type" value="${6}"/>
+                    		<json:property name="zf_options">
+                    			<json:array>
+                    				<Core:forEach items="${field.allowedValues}" var="pickListValues">
+                            			<json:object>
+                                    		<json:property name="zf_dynamic_opt_key" value="${pickListValues}"/>
+                                    		<json:property name="zf_dynamic_opt_val" value="${pickListValues}"/>
+                            			</json:object>
+                             		</Core:forEach>       
+                         		</json:array>
+                    	</json:property>
+                	</Core:if>
+                    
+                    <Core:if test="${field.type eq 'Boolean'}">
+                    	<json:property name="elementType" value="${6}"/>
+                		<json:property name="type" value="${6}"/>
+                        <json:property name="zf_options">
+                        	<json:array>
+                            	<json:object>
+                                	<json:property name="zf_dynamic_opt_key" value="True"/>
+                                    <json:property name="zf_dynamic_opt_val" value="true"/>
+                                </json:object>
+                                <json:object>
+                                	<json:property name="zf_dynamic_opt_key" value="False"/>
+                                    <json:property name="zf_dynamic_opt_val" value="false"/>
+                                </json:object>
+                            </json:array>
+                        </json:property>
+                    
+                    </Core:if>
+                    
+                    <Core:if test="${field.type eq 'DateTime'}">
+                    	<json:property name="elementType" value="${5}"/>
+                        <json:property name="type" value="${8}"/>
+                        <json:property name="zf_help_text" value="yyyy-MM-ddTHH:mm:ss.sssZ"/>
+                    </Core:if>
+                    
+                    <Core:if test="${field.type eq 'Date'}">
+                    	<json:property name="elementType" value="${9}"/>
+                        <json:property name="type" value="${6}"/>
+                        <json:property name="zf_help_text" value="YYYY-MM-DD"/>
+                    </Core:if>
+                    
+            	</json:object>
+                
+            </Core:if>
+            
+            <Core:if test="${field.type eq 'Textarea'}">
+            	<json:property name="elementType" value="${1}"/>
+                <json:property name="type" value="${0}"/>
+            </Core:if>
+            
+        </Core:forEach>
+        
+    </Core:forEach>
+    
+ </json:array>   
